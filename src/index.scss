@@ -14,5 +14,12 @@
   }
   .movie-list .swiper-slide {
     width: 300px;
+    height: auto;
+  }
+  .banner .swiper {
+    height: 100%;
+  }
+  .banner-img {
+    object-position: 0px -500px;
   }
 }
