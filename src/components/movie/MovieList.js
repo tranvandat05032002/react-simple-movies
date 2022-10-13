@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import MovieCard from "./MovieCard";
 import useSWR from "swr";
 import { fetcher } from "../../Config";
-import { useState } from "react";
 
 const MovieList = ({ type = "now_playing" }) => {
-  const { data, error } = useSWR(
+  const { data } = useSWR(
     `https://api.themoviedb.org/3/movie/${type}?api_key=2537abce0574afa219f72b4d7aacde04`,
     fetcher
   );

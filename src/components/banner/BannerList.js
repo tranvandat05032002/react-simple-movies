@@ -10,9 +10,8 @@ const BannerList = () => {
     fetcher
   );
   const movies = data?.results || [];
-  console.log("🚀 ~ file: Banner.js ~ line 12 ~ Banner ~ movies", movies);
   return (
-    <section className="banner h-[500px] page-container mb-16 overflow-hidden">
+    <section className="banner h-[500px] page-container mb-16 overflow-hidden select-none">
       <Swiper grabCursor="true" slidesPerView={"auto"}>
         {movies.length > 0 &&
           movies.map((item) => (
