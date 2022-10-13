@@ -8,7 +8,6 @@ const MoviePage = () => {
     fetcher
   );
   const movies = data?.results || [];
-  console.log("🚀 ~ file: MoviePage.js ~ line 11 ~ MoviePage ~ movies", movies);
   return (
     <div className="py-10 ">
       <div className="flex mb-10">
