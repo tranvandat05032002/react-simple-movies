@@ -4,6 +4,7 @@ import MovieCard from "../components/movie/MovieCard";
 import { apiKey, fetcher } from "../Config";
 import useDebounce from "../hooks/useDebounce";
 import LoadingSkeleton from "../loading/LoadingSkeleton";
+import ReactPaginate from "react-paginate";
 const MoviePage = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const [url, setUrl] = useState(
@@ -34,6 +35,24 @@ const MoviePage = () => {
     }
   }, [filterDebounce, pageIndex]);
   const movies = data?.results || [];
+  //react-pagination
+  const [pageCount, setPageCount] = useState(0);
+  // Here we use item offsets; we could also use page offsets
+  // following the API or data you're working with.
+  const [itemOffset, setItemOffset] = useState(0);
+  const itemsPerPage = 20;
+
+  useEffect(() => {
+    if (!data || !data.total_pages) return;
+    setPageCount(Math.ceil(data.total_pages / itemsPerPage));
+  }, [data, itemOffset]);
+
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % data.total_pages;
+    setItemOffset(newOffset);
+    setPageIndex(event.selected + 1);
+  };
   return (
     <div className="py-10 ">
       <div className="flex mb-10">
@@ -72,55 +91,15 @@ const MoviePage = () => {
             <MovieCard key={item.id} item={item}></MovieCard>
           ))}
       </div>
-      <div className="flex items-center justify-center mt-10 text-white gap-x-5 text-[12px] font-bold">
-        <span
-          className="bg-[#1e293c] cursor-pointer opacity-75 py-3 leading-none px-4 hover:border-violet-400 border-transparent border-[1px] rounded-[4px] "
-          onClick={() => setPageIndex(pageIndex - 1)}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-4 h-4"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75"
-            />
-          </svg>
-        </span>
-        {new Array(countIndex).fill(0).map((item, index) => (
-          <span
-            key={index}
-            className={`bg-[#1e293c] cursor-pointer opacity-75 py-3 leading-none px-4 hover:border-violet-400 border-transparent border-[1px] rounded-[4px] focus:outline-none outline-none max-w-[40px] text-center`}
-            onClick={() => setPageIndex(index + 1)}
-          >
-            {index + 1}
-          </span>
-        ))}
-        <span
-          className="bg-[#1e293c] cursor-pointer opacity-75 py-3 leading-none px-4 hover:border-violet-400 border-transparent border-[1px] rounded-[4px]"
-          onClick={() => setPageIndex(pageIndex + 1)}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-4 h-4"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"
-            />
-          </svg>
-        </span>
-      </div>
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={pageCount}
+        previousLabel="< previous"
+        renderOnZeroPageCount={null}
+      />
     </div>
   );
 };
