@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import MovieList from "../components/movie/MovieList";
 import { apiKey, fetcher } from "../Config";
+
 const MovieDetailsPage = () => {
   const { movieID } = useParams();
   const { data } = useSWR(
@@ -16,7 +17,7 @@ const MovieDetailsPage = () => {
       <div className="w-full h-[600px] relative">
         <div className="absolute inset-0 bg-black bg-opacity-70"></div>
         <div
-          className="w-full h-full bg-cover bg-no-repeat"
+          className="w-full h-full bg-no-repeat bg-cover"
           style={{
             backgroundImage: `url(https://image.tmdb.org/t/p/w500/${backdrop_path})`,
           }}
@@ -29,15 +30,15 @@ const MovieDetailsPage = () => {
           className="w-full h-full object-cover rounded-lg -mt-[240px] relative z-10"
         />
       </div>
-      <h1 className="text-center text-4xl font-bold text-white mb-10 mt-4">
+      <h1 className="mt-4 mb-10 text-4xl font-bold text-center text-white">
         {title}
       </h1>
       {genres.length > 0 && (
-        <div className="flex items-center justify-center gap-x-5 mb-10">
+        <div className="flex items-center justify-center mb-10 gap-x-5">
           {genres.map((item) => (
             <span
               key={item.id}
-              className="py-2 px-4 border-primary border text-primary rounded-full font-bold"
+              className="px-4 py-2 font-bold border rounded-full border-primary text-primary"
             >
               {item.name}
             </span>
@@ -65,11 +66,11 @@ const MovieMeta = () => {
   if (!cast | (cast.length <= 0)) return null;
   return (
     <div className="py-10 ">
-      <h2 className="text-center text-3xl mb-10 text-white"> Casts</h2>
+      <h2 className="mb-10 text-3xl text-center text-white"> Casts</h2>
       <div className="grid grid-cols-4 gap-5">
         {cast.slice(0, 4).map((item) => (
           <div className="cast-item " key={item.id}>
-            <h3 className="text-xl font-medium text-center mb-2 text-white">
+            <h3 className="mb-2 text-xl font-medium text-center text-white">
               {item.name}
             </h3>
             <img
@@ -100,7 +101,7 @@ const MovieVideo = () => {
       <div className="flex flex-col gap-10">
         {results.slice(0, 2).map((item) => (
           <div className="" key={item.id}>
-            <h3 className="mb-5 text-xl font-medium p-3 inline-block text-white border-primary border-b-2 border-l-2 w-max">
+            <h3 className="inline-block p-3 mb-5 text-xl font-medium text-white border-b-2 border-l-2 border-primary w-max">
               {item.name}
             </h3>
             <div className="w-full aspect-video">
@@ -112,7 +113,7 @@ const MovieVideo = () => {
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-                className="w-full h-full object-fill"
+                className="object-fill w-full h-full"
               ></iframe>
             </div>
           </div>
@@ -134,7 +135,7 @@ const MovieSimilar = () => {
   if (!results || results.length <= 0) return null;
   return (
     <div className="py-10">
-      <h2 className="text-3xl font-medium mb-10 text-white">Similar</h2>
+      <h2 className="mb-10 text-3xl font-medium text-white">Similar</h2>
       <MovieList type="similar" movieID={movieID}></MovieList>
     </div>
   );
