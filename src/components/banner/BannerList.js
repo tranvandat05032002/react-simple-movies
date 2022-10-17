@@ -1,12 +1,13 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useSWR from "swr";
-import { fetcher } from "../../Config";
+import { fetcher, tmpAPI } from "../../Config";
 import BannerItem from "./BannerItem";
 
-const BannerList = () => {
+const BannerList = ({ type = "upcoming" }) => {
   const { data } = useSWR(
-    "https://api.themoviedb.org/3/movie/upcoming?api_key=2537abce0574afa219f72b4d7aacde04",
+    // "https://api.themoviedb.org/3/movie/upcoming?api_key=2537abce0574afa219f72b4d7aacde04",
+    tmpAPI.getMovieBannerList(type),
     fetcher
   );
   const movies = data?.results || [];

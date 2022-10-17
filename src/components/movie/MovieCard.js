@@ -21,12 +21,6 @@ const MovieCard = ({ item }) => {
           <span>{new Date(release_date).getFullYear()}</span>
           <span>{vote_average}</span>
         </div>
-        {/* <button
-          className="w-full px-6 py-3 mt-auto capitalize rounded-lg bg-primary"
-          onClick={() => navigate(`/movies/${id}`)}
-        >
-          Watch Now
-        </button> */}
         <Button onClick={() => navigate(`/movies/${id}`)} full>
           Watch Now
         </Button>

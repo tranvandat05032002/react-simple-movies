@@ -26,9 +26,6 @@ const BannerItem = ({ item, id }) => {
             Drama
           </span>
         </div>
-        {/* <button className="px-6 py-3 font-medium text-white rounded-lg bg-primary">
-          Watch Now
-        </button> */}
         <Button onClick={() => navigate(`/movies/${id}`)}>Watch Now</Button>
       </div>
     </div>

@@ -2,14 +2,11 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import MovieList from "../components/movie/MovieList";
-import { apiKey, fetcher } from "../Config";
+import { apiKey, fetcher, tmpAPI } from "../Config";
 
 const MovieDetailsPage = () => {
   const { movieID } = useParams();
-  const { data } = useSWR(
-    ` https://api.themoviedb.org/3/movie/${movieID}?api_key=${apiKey}`,
-    fetcher
-  );
+  const { data } = useSWR(tmpAPI.getMovieDetails(movieID), fetcher);
   if (!data) return null;
   const { backdrop_path, poster_path, title, genres, overview } = data;
   return (
@@ -57,10 +54,7 @@ const MovieDetailsPage = () => {
 
 const MovieMeta = () => {
   const { movieID } = useParams();
-  const { data } = useSWR(
-    ` https://api.themoviedb.org/3/movie/${movieID}/credits?api_key=${apiKey}`,
-    fetcher
-  );
+  const { data } = useSWR(tmpAPI.getMovieDetails(movieID, "credits"), fetcher);
   if (!data) return null;
   const { cast } = data;
   if (!cast | (cast.length <= 0)) return null;
@@ -87,10 +81,7 @@ const MovieMeta = () => {
 
 const MovieVideo = () => {
   const { movieID } = useParams();
-  const { data } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieID}/videos?api_key=${apiKey}`,
-    fetcher
-  );
+  const { data } = useSWR(tmpAPI.getMovieDetails(movieID, "videos"), fetcher);
   console.log(data);
   if (!data) return null;
   const { results } = data;
@@ -125,10 +116,7 @@ const MovieVideo = () => {
 
 const MovieSimilar = () => {
   const { movieID } = useParams();
-  const { data } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieID}/similar?api_key=${apiKey}`,
-    fetcher
-  );
+  const { data } = useSWR(tmpAPI.getMovieDetails(movieID, "similar"), fetcher);
   console.log(data);
   if (!data) return null;
   const { results } = data;
