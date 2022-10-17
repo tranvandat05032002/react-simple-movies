@@ -16,7 +16,7 @@ const BannerList = () => {
         {movies.length > 0 &&
           movies.map((item) => (
             <SwiperSlide key={item.id}>
-              <BannerItem item={item}></BannerItem>
+              <BannerItem item={item} id={item.id}></BannerItem>
             </SwiperSlide>
           ))}
       </Swiper>

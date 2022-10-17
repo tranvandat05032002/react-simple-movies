@@ -16,13 +16,8 @@ const MoviePage = () => {
   };
   const filterDebounce = useDebounce(filter, 1000);
   const { data, error } = useSWR(url, fetcher);
+  console.log("🚀 ~ file: MoviePage.js ~ line 19 ~ MoviePage ~ data", data);
   const loading = !data && !error;
-  const countIndex = 5;
-  if (pageIndex > countIndex) {
-    setPageIndex(0);
-  } else if (pageIndex < 1) {
-    setPageIndex(1);
-  }
   useEffect(() => {
     if (filterDebounce) {
       setUrl(
@@ -37,19 +32,17 @@ const MoviePage = () => {
   const movies = data?.results || [];
   //react-pagination
   const [pageCount, setPageCount] = useState(0);
-  // Here we use item offsets; we could also use page offsets
-  // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
   const itemsPerPage = 20;
 
   useEffect(() => {
-    if (!data || !data.total_pages) return;
-    setPageCount(Math.ceil(data.total_pages / itemsPerPage));
+    if (!data || !data.total_results) return;
+    setPageCount(Math.ceil(data.total_results / itemsPerPage));
   }, [data, itemOffset]);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % data.total_pages;
+    const newOffset = (event.selected * itemsPerPage) % data.total_results;
     setItemOffset(newOffset);
     setPageIndex(event.selected + 1);
   };
@@ -93,12 +86,13 @@ const MoviePage = () => {
       </div>
       <ReactPaginate
         breakLabel="..."
-        nextLabel="next >"
+        nextLabel=" >"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         pageCount={pageCount}
-        previousLabel="< previous"
+        previousLabel="< "
         renderOnZeroPageCount={null}
+        className="pagination"
       />
     </div>
   );

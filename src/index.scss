@@ -42,3 +42,20 @@
     background-position-x: -200%;
   }
 }
+
+//pagination
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0px 20px;
+  margin-top: 20px;
+  font-size: 18px;
+  color: white;
+  opacity: 0.75;
+
+  .selected {
+    color: #f05d82;
+  }
+}
