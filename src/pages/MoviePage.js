@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import MovieCard from "../components/movie/MovieCard";
-import { apiKey, fetcher } from "../Config";
+import { fetcher, tmpAPI } from "../Config";
 import useDebounce from "../hooks/useDebounce";
 import LoadingSkeleton from "../loading/LoadingSkeleton";
 import ReactPaginate from "react-paginate";
 const MoviePage = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const [url, setUrl] = useState(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&page=${pageIndex}`
+    tmpAPI.getMovieList("popular", null, pageIndex)
   );
   const [filter, setFilter] = useState("");
   const handleFilterChange = (e) => {
@@ -20,13 +20,9 @@ const MoviePage = () => {
   const loading = !data && !error;
   useEffect(() => {
     if (filterDebounce) {
-      setUrl(
-        `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${filterDebounce}&page=${pageIndex}`
-      );
+      setUrl(tmpAPI.getMovieSearch(filterDebounce, pageIndex));
     } else {
-      setUrl(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&page=${pageIndex}`
-      );
+      setUrl(tmpAPI.getMovieList("popular", null, pageIndex));
     }
   }, [filterDebounce, pageIndex]);
   const movies = data?.results || [];

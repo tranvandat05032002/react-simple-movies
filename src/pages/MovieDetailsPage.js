@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import MovieList from "../components/movie/MovieList";
-import { apiKey, fetcher, tmpAPI } from "../Config";
+import { fetcher, tmpAPI } from "../Config";
 
 const MovieDetailsPage = () => {
   const { movieID } = useParams();
@@ -16,13 +16,13 @@ const MovieDetailsPage = () => {
         <div
           className="w-full h-full bg-no-repeat bg-cover"
           style={{
-            backgroundImage: `url(https://image.tmdb.org/t/p/w500/${backdrop_path})`,
+            backgroundImage: `url(${tmpAPI.img500(backdrop_path)})`,
           }}
         ></div>
       </div>
       <div className="w-full max-w-[800px] h-[400px] mx-auto  rounded-lg">
         <img
-          src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
+          src={`${tmpAPI.img500(poster_path)}`}
           alt=""
           className="w-full h-full object-cover rounded-lg -mt-[240px] relative z-10"
         />
@@ -54,7 +54,8 @@ const MovieDetailsPage = () => {
 
 const MovieMeta = () => {
   const { movieID } = useParams();
-  const { data } = useSWR(tmpAPI.getMovieDetails(movieID, "credits"), fetcher);
+  const { data } = useSWR(tmpAPI.getMovieMeta(movieID, "credits"), fetcher);
+  console.log(data);
   if (!data) return null;
   const { cast } = data;
   if (!cast | (cast.length <= 0)) return null;
@@ -68,7 +69,7 @@ const MovieMeta = () => {
               {item.name}
             </h3>
             <img
-              src={`https://image.tmdb.org/t/p/w500/${item.profile_path}`}
+              src={tmpAPI.imgOriginal(item.profile_path)}
               alt=""
               className="w-full h-[350px] object-cover rounded-lg mb-3"
             />
@@ -81,8 +82,7 @@ const MovieMeta = () => {
 
 const MovieVideo = () => {
   const { movieID } = useParams();
-  const { data } = useSWR(tmpAPI.getMovieDetails(movieID, "videos"), fetcher);
-  console.log(data);
+  const { data } = useSWR(tmpAPI.getMovieMeta(movieID, "videos"), fetcher);
   if (!data) return null;
   const { results } = data;
   if (!results || results.length <= 0) return null;
@@ -116,7 +116,7 @@ const MovieVideo = () => {
 
 const MovieSimilar = () => {
   const { movieID } = useParams();
-  const { data } = useSWR(tmpAPI.getMovieDetails(movieID, "similar"), fetcher);
+  const { data } = useSWR(tmpAPI.getMovieMeta(movieID, "similar"), fetcher);
   console.log(data);
   if (!data) return null;
   const { results } = data;

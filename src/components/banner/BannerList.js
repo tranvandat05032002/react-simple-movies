@@ -5,11 +5,7 @@ import { fetcher, tmpAPI } from "../../Config";
 import BannerItem from "./BannerItem";
 
 const BannerList = ({ type = "upcoming" }) => {
-  const { data } = useSWR(
-    // "https://api.themoviedb.org/3/movie/upcoming?api_key=2537abce0574afa219f72b4d7aacde04",
-    tmpAPI.getMovieBannerList(type),
-    fetcher
-  );
+  const { data } = useSWR(tmpAPI.getMovieBannerList(type), fetcher);
   const movies = data?.results || [];
   return (
     <section className="banner h-[500px] page-container mb-16 overflow-hidden select-none">
