@@ -13,6 +13,9 @@ const Header = () => {
       <NavLink to="/movies" className={navLinkClass}>
         Movies
       </NavLink>
+      <NavLink to="/movies2" className={navLinkClass}>
+        Movies2
+      </NavLink>
     </header>
   );
 };

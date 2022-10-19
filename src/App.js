@@ -3,11 +3,13 @@ import "swiper/scss";
 import { Routes, Route } from "react-router-dom";
 import Main from "./components/layout/Main";
 import BannerList from "./components/banner/BannerList";
+import MoviePage from "./pages/MoviePage";
 // import HomePage from "./pages/HomePage";
 // import MoviePage from "./pages/MoviePage";
 // import MovieDetailsPage from "./pages/MovieDetailsPage";
 const HomePage = React.lazy(() => import("./pages/HomePage"));
-const MoviePage = React.lazy(() => import("./pages/MoviePage"));
+// const MoviePage = React.lazy(() => import("./pages/MoviePage"));
+const MoviePageLoadMore = React.lazy(() => import("./pages/MoviePageLoadMore"));
 const MovieDetailsPage = React.lazy(() => import("./pages/MovieDetailsPage"));
 
 function App() {
@@ -26,6 +28,10 @@ function App() {
               }
             ></Route>
             <Route path="/movies" element={<MoviePage></MoviePage>}></Route>
+            <Route
+              path="/movies2"
+              element={<MoviePageLoadMore></MoviePageLoadMore>}
+            ></Route>
             <Route
               path="/movies/:movieID"
               element={<MovieDetailsPage></MovieDetailsPage>}
