@@ -2,6 +2,18 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../button/Button";
 import { tmpAPI } from "../../Config";
+import PropTypes from "prop-types";
+import { withErrorBoundary } from "react-error-boundary";
+
+function ErrorFallback({ error, resetErrorBoundary }) {
+  return (
+    <div role="alert">
+      <p>Something went wrong:</p>
+      <pre>{error.message}</pre>
+      <button onClick={resetErrorBoundary}>Try again</button>
+    </div>
+  );
+}
 
 const MovieCard = ({ item }) => {
   const { title, vote_average, poster_path, release_date, id } = item;
@@ -29,5 +41,15 @@ const MovieCard = ({ item }) => {
     </div>
   );
 };
-
-export default MovieCard;
+MovieCard.propTypes = {
+  item: PropTypes.shape({
+    title: PropTypes.string,
+    vote_average: PropTypes.number,
+    poster_path: PropTypes.string,
+    release_date: PropTypes.string,
+    id: PropTypes.number,
+  }),
+};
+export default withErrorBoundary(MovieCard, {
+  FallbackComponent: ErrorFallback,
+});
