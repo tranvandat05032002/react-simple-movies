@@ -13,7 +13,7 @@ export const tmpAPI = {
     `${tmdbEndpoint}/${movieID}${type ? "/" + type : ""}?api_key=${apiKey}`,
   getMovieBannerList: (type) => `${tmdbEndpoint}/${type}?api_key=${apiKey}`,
   getMovieSearch: (query, page = 1) =>
-    `${tmdbEndpointSearch}?api_key=${apiKey}&query=${query}&page=${(page = 1)}`,
+    `${tmdbEndpointSearch}?api_key=${apiKey}&query=${query}&page=${page}`,
   getMovieMeta: (movieID, type) =>
     `${tmdbEndpoint}/${movieID}/${type}?api_key=${apiKey}`,
   imgOriginal: (url) => `https://image.tmdb.org/t/p/w500/${url}`,

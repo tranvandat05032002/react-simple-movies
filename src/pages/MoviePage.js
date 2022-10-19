@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
-import MovieCard from "../components/movie/MovieCard";
+import MovieCard, { MovieCardSkeleton } from "../components/movie/MovieCard";
 import { fetcher, tmpAPI } from "../Config";
 import useDebounce from "../hooks/useDebounce";
-import LoadingSkeleton from "../loading/LoadingSkeleton";
 import ReactPaginate from "react-paginate";
+import { v4 as uuidv4 } from "uuid";
 const MoviePage = () => {
+  const itemPerPage = 10;
   const [pageIndex, setPageIndex] = useState(1);
   const [url, setUrl] = useState(
     tmpAPI.getMovieList("popular", null, pageIndex)
@@ -16,8 +17,7 @@ const MoviePage = () => {
   };
   const filterDebounce = useDebounce(filter, 1000);
   const { data, error } = useSWR(url, fetcher);
-  console.log("🚀 ~ file: MoviePage.js ~ line 19 ~ MoviePage ~ data", data);
-  const loading = !data && !error;
+  const isLoading = !data && !error;
   useEffect(() => {
     if (filterDebounce) {
       setUrl(tmpAPI.getMovieSearch(filterDebounce, pageIndex));
@@ -70,11 +70,15 @@ const MoviePage = () => {
           </button>
         </div>
       </div>
-      {loading && (
-        <div className="w-10 h-10 mx-auto mb-5 transition-all border-4 rounded-full border-primary border-t-transparent animate-spin"></div>
+      {!isLoading && (
+        <div className="grid grid-cols-5 gap-5">
+          {new Array(itemPerPage).fill(0).map(() => (
+            <MovieCardSkeleton key={uuidv4()}></MovieCardSkeleton>
+          ))}
+        </div>
       )}
       <div className="grid grid-cols-5 gap-5">
-        {!loading &&
+        {!isLoading &&
           movies.length > 0 &&
           movies.map((item) => (
             <MovieCard key={item.id} item={item}></MovieCard>
@@ -94,26 +98,4 @@ const MoviePage = () => {
   );
 };
 
-const MoviePageSkeleton = () => {
-  return (
-    <div className="py-10 ">
-      {/* Card */}
-      <div className="grid grid-cols-5 gap-5">
-        <div className="flex flex-col h-full p-3 text-white rounded-lg select-none movie-card bg-slate-800">
-          <LoadingSkeleton height={"250px"} rounded="16px"></LoadingSkeleton>
-          <div className="flex flex-col flex-1">
-            {/* <h3 className="mb-3 text-lg font-bold">{title} </h3> */}
-            <div className="flex items-center justify-between mb-10 text-sm opacity-50">
-              {/* <span>{new Date(release_date).getFullYear()}</span>  */}
-              {/* <span></span> vote */}
-            </div>
-            <button className="w-full px-6 py-3 mt-auto capitalize rounded-lg bg-primary">
-              Watch Now
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 export default MoviePage;
